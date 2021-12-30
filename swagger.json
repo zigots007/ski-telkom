@@ -1,0 +1,3127 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "My Simple API",
+        "description": "My API",
+        "Protocols":"Tesging",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:4000",
+    "basePath": "/",
+    "tags": [
+      {
+          "name": "Templates",
+          "description": "API for templates"
+      },
+      {
+        "name": "Checklists",
+        "description": "API for Checklist"
+      },
+      {
+        "name": "Items",
+        "description": "API for Items"
+      },
+      {
+        "name": "History",
+        "description": "API for History"
+      }
+    ],
+    "schemes": [
+      "http"
+    ],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/checklists/templates": {
+            "get": {
+                "tags": ["Templates"],
+                "summary": "List all checklists templates",
+                "security": [{"Bearer": []}],
+                "parameters":[
+                    {
+                      "in": "query",
+                      "name":"filter",
+                      "type": "string"
+                    },
+                    {
+                      "in":"query",
+                      "name": "sort",
+                      "type": "string"
+                    },
+                    {
+                      "in":"query",
+                      "name": "fields",
+                      "type": "string"
+                    },
+                    {
+                      "in":"query",
+                      "name": "page_limit",
+                      "type": "string",
+                      "default": "10",
+                      "description": "Limit returned resource."
+                    },
+                    {
+                      "in":"query",
+                      "name": "page_offset",
+                      "type": "string",
+                      "default": "0",
+                      "description": "Limit returned resource."
+                    }
+                ],
+                "responses": {
+                  "401" : {
+                    "schema" : {
+                      "type": "object",
+                      "title": "Not Authorized",
+                      "properties": {
+                        "status": {
+                          "type": "string"
+                        },
+                        "error": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "error"
+                      ]
+                    }
+                  },
+                  "200": {
+                      "description": "OK",
+                      "schema": {
+                        "$ref": "#/definitions/checklist_list_response"
+                      }
+                  }
+                }
+            },
+            "post":{
+              "tags": ["Templates"],
+              "summary":"Create checklist template",
+              "security": [{"Bearer": []}],
+              "parameters":[
+                {
+                  "in": "body",
+                  "name": "body",
+                  "required": false,
+                  "schema": {
+                      "$ref": "#/definitions/template_payload"
+                  }
+                }
+              ],
+              "responses": {
+                "401" : {
+                  "schema" : {
+                    "type": "object",
+                    "title": "Not Authorized",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "error": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "error"
+                    ]
+                  }
+                },
+                "201": {
+                  "description": "OK",
+                  "schema": {
+                    "type":"object",
+                    "properties": {
+                      "data":{
+                        "type":"object",
+                        "properties":{
+                            "id":{
+                              "type": "integer"
+                            },
+                            "atributes":{
+                              "$ref":"#/definitions/template_attribut"
+                            }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+        },
+        "/checklists/templates/{templateId}": {
+          "get": {
+            "tags": ["Templates"],
+            "summary": "Get checklist template by given templateId",
+            "security": [{"Bearer": []}],
+            "parameters":[
+                {
+                  "in": "path",
+                  "name":"templateId",
+                  "type": "string",
+                  "description": "ID of template that needs to be fetched",
+                  "required": true
+                }
+            ],
+            "produces": [
+              "application/json"
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                      "$ref": "#/definitions/checklist_list_response"
+                    }
+                }
+            }
+          },
+          "patch": {
+            "summary": "Edit Checklist Template by given templateId",
+            "tags": ["Templates"],
+            "security": [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "path",
+                "name":"templateId",
+                "type": "string",
+                "description": "ID of template that needs to be fetched",
+                "required": true
+              }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                "description": "The 200 response"
+              }
+            }
+          },
+          "delete": {
+            "summary": "Delete checklist template by given {templateId}",
+            "tags": ["Templates"],
+            "security": [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "path",
+                "name":"templateId",
+                "type": "string",
+                "description": "ID of template that needs to be fetched",
+                "required": true
+              }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "204": {
+                "description": "The 204 response"
+              }
+            }
+          }
+        },
+        "/checklists/templates/{templateId}/assigns": {
+          "post":{
+            "tags": ["Templates"],
+            "summary":"Assign bulk checklists template by given templateId to many domains",
+            "security": [{"Bearer": []}],
+            "parameters":[
+                {
+                  "in": "path",
+                  "name": "templateId",
+                  "required": true,
+                  "schema": {
+                    "type": "object",
+                    "required": [
+                      "data"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "attributes"
+                          ],
+                          "properties": {
+                            "attributes": {
+                              "type": "object",
+                              "required": [
+                                "object_id",
+                                "object_domain"
+                              ],
+                              "properties": {
+                                "object_id": {
+                                  "type": "integer"
+                                },
+                                "object_domain": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "201": {
+                "description": "OK",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer"
+                        },
+                        "total": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "attributes": {
+                            "type": "object",
+                            "properties": {
+                              "object_domain": {
+                                "type": "string"
+                              },
+                              "object_id": {
+                                "type": "integer"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "is_completed": {
+                                "type": "boolean"
+                              },
+                              "due": {
+                                "type": "string"
+                              },
+                              "urgency": {
+                                "type": "integer"
+                              },
+                              "completed_at": {
+                                "type": "null"
+                              },
+                              "updated_by": {
+                                "type": "null"
+                              },
+                              "created_by": {
+                                "type": "integer"
+                              },
+                              "created_at": {
+                                "type": "string"
+                              },
+                              "updated_at": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "links": {
+                            "type": "object",
+                            "properties": {
+                              "self": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "relationships": {
+                            "type": "object",
+                            "properties": {
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "links": {
+                                    "type": "object",
+                                    "properties": {
+                                      "self": {
+                                        "type": "string"
+                                      },
+                                      "related": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  },
+                                  "data": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "type": {
+                                          "type": "string"
+                                        },
+                                        "id": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "attributes": {
+                            "type": "object",
+                            "properties": {
+                              "description": {
+                                "type": "string"
+                              },
+                              "is_completed": {
+                                "type": "boolean"
+                              },
+                              "completed_at": {
+                                "type": "null"
+                              },
+                              "due": {
+                                "type": "string"
+                              },
+                              "urgency": {
+                                "type": "integer"
+                              },
+                              "updated_by": {
+                                "type": "null"
+                              },
+                              "user_id": {
+                                "type": "integer"
+                              },
+                              "checklist_id": {
+                                "type": "integer"
+                              },
+                              "deleted_at": {
+                                "type": "null"
+                              },
+                              "created_at": {
+                                "type": "string"
+                              },
+                              "updated_at": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "links": {
+                            "type": "object",
+                            "properties": {
+                              "self": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/checklists/{checklistId}": {
+          "get": {
+            "tags": ["Checklists"],
+            "summary": "Get checklist by given checklistId.",
+            "description": "Note: We can include all items in checklist with by passing include=items",
+            "security": [{"Bearer": []}],
+            "parameters":[
+                {
+                  "in": "path",
+                  "name":"checklistId",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "in": "query",
+                  "name":"include",
+                  "type": "string",
+                  "default" : "items"
+                },
+                {
+                  "in": "query",
+                  "name":"filter",
+                  "type": "string"
+                },
+                {
+                  "in":"query",
+                  "name": "sort",
+                  "type": "string"
+                },
+                {
+                  "in":"query",
+                  "name": "fields",
+                  "type": "string"
+                },
+                {
+                  "in":"query",
+                  "name": "page_limit",
+                  "type": "string",
+                  "default": "10",
+                  "description": "Limit returned resource."
+                },
+                {
+                  "in":"query",
+                  "name": "page_offset",
+                  "type": "string",
+                  "default": "0",
+                  "description": "Limit returned resource."
+                }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                  "description": "OK",
+                  "schema": {
+                    "type": "object",
+                    "title": "Checklist Response",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "required": [
+                          "type",
+                          "id",
+                          "attributes",
+                          "links"
+                        ],
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "attributes": {
+                            "type": "object",
+                            "title": "Cheklist Attributes",
+                            "required": [
+                              "object_domain",
+                              "object_id",
+                              "description"
+                            ],
+                            "properties": {
+                              "object_domain": {
+                                "type": "string"
+                              },
+                              "object_id": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "is_completed": {
+                                "type": "boolean"
+                              },
+                              "completed_at": {
+                                "type": "null"
+                              },
+                              "updated_by": {
+                                "type": "string"
+                              },
+                              "updated_at": {
+                                "type": "null"
+                              },
+                              "created_at": {
+                                "type": "string"
+                              },
+                              "due": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "format": "date-time",
+                                "example": "2020-01-29 11:44:40"
+                              },
+                              "urgency": {
+                                "type": "integer"
+                              }
+                            }
+                          },
+                          "links": {
+                            "type": "object",
+                            "required": [
+                              "self"
+                            ],
+                            "properties": {
+                              "self": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "data"
+                    ]
+                  }
+              },
+              "404": {
+                "description": "Not Found",
+                "schema" : {
+                  "type": "object",
+                  "title": "Error Response",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Not Found"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "500" : {
+                "description": "Server Error",
+                "schema" : {
+                  "type": "object",
+                  "title": "Error Response",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "patch": {
+            "summary": "Update checklist by given checklistId",
+            "tags": ["Checklists"],
+            "security" : [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "path",
+                "name":"checklistId",
+                "type": "string",
+                "description": "ID of template that needs to be fetched",
+                "required": true
+              },
+              {
+                "in": "body",
+                "name": "body",
+                "required": false,
+                "schema": {
+                  "type": "object",
+                  "title": "Checklist Response",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id",
+                        "attributes",
+                        "links"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "title": "Cheklist Attributes",
+                          "required": [
+                            "object_domain",
+                            "object_id",
+                            "description"
+                          ],
+                          "properties": {
+                            "object_domain": {
+                              "type": "string"
+                            },
+                            "object_id": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "is_completed": {
+                              "type": "boolean"
+                            },
+                            "completed_at": {
+                              "type": "null"
+                            },
+                            "updated_by": {
+                              "type": "string"
+                            },
+                            "updated_at": {
+                              "type": "null"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "due": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "format": "date-time",
+                              "example": "2020-01-29 11:44:40"
+                            },
+                            "urgency": {
+                              "type": "integer"
+                            }
+                          }
+                        },
+                        "links": {
+                          "type": "object",
+                          "required": [
+                            "self"
+                          ],
+                          "properties": {
+                            "self": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "The 200 response",
+                "schema": {
+                  "type": "object",
+                  "title": "Checklist Response",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id",
+                        "attributes",
+                        "links"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "title": "Cheklist Attributes",
+                          "required": [
+                            "object_domain",
+                            "object_id",
+                            "description"
+                          ],
+                          "properties": {
+                            "object_domain": {
+                              "type": "string"
+                            },
+                            "object_id": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "is_completed": {
+                              "type": "boolean"
+                            },
+                            "completed_at": {
+                              "type": "null"
+                            },
+                            "updated_by": {
+                              "type": "string"
+                            },
+                            "updated_at": {
+                              "type": "null"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "due": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "format": "date-time",
+                              "example": "2020-01-29 11:44:40"
+                            },
+                            "urgency": {
+                              "type": "integer"
+                            }
+                          }
+                        },
+                        "links": {
+                          "type": "object",
+                          "required": [
+                            "self"
+                          ],
+                          "properties": {
+                            "self": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              },
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "404" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Found",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "500" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Server Error",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "delete": {
+            "summary": "Delete checklist by given checklistId",
+            "tags": ["Checklists"],
+            "security" : [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "path",
+                "name":"checklistId",
+                "type": "string",
+                "description": "ID of checklist that needs to be fetched",
+                "required": true
+              }
+            ],
+            "responses": {
+              "204": {
+                "description": "The 204 response"
+              },
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "404" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Found",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "500" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Server Error",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "/checklists": {
+          "get": {
+            "tags": ["Checklists"],
+            "summary": "Get list of checklists.",
+            "description": "Note: We can include all items in checklist with by passing include=items",
+            "security": [{"Bearer": []}],
+            "parameters":[
+                {
+                  "in": "query",
+                  "name":"include",
+                  "type": "string",
+                  "default" : "items"
+                },
+                {
+                  "in": "query",
+                  "name":"filter",
+                  "type": "string"
+                },
+                {
+                  "in":"query",
+                  "name": "sort",
+                  "type": "string"
+                },
+                {
+                  "in":"query",
+                  "name": "fields",
+                  "type": "string"
+                },
+                {
+                  "in":"query",
+                  "name": "page_limit",
+                  "type": "string",
+                  "default": "10",
+                  "description": "Limit returned resource."
+                },
+                {
+                  "in":"query",
+                  "name": "page_offset",
+                  "type": "string",
+                  "default": "0",
+                  "description": "Limit returned resource."
+                }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref":"#/definitions/checklist_list_response"
+                  }
+              },
+              "500" : {
+                "description": "Server Error",
+                "schema" : {
+                  "type": "object",
+                  "title": "Error Response",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "post":{
+            "tags": ["Checklists"],
+            "summary":"Create checklist template",
+            "security" : [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "body",
+                "name": "body",
+                "required": false,
+                "schema": {
+                  "type": "object",
+                  "title": "Checklist Payload",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "attributes"
+                      ],
+                      "properties": {
+                        "attributes": {
+                          "type": "object",
+                          "title": "Cheklist Attributes",
+                          "required": [
+                            "object_domain",
+                            "object_id",
+                            "description"
+                          ],
+                          "properties": {
+                            "object_domain": {
+                              "type": "string"
+                            },
+                            "object_id": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "is_completed": {
+                              "type": "boolean"
+                            },
+                            "completed_at": {
+                              "type": "null"
+                            },
+                            "updated_by": {
+                              "type": "string"
+                            },
+                            "updated_at": {
+                              "type": "null"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "due": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "format": "date-time",
+                              "example": "2020-01-29 11:44:40"
+                            },
+                            "urgency": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "201": {
+                "description": "OK",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "title": "Cheklist Attributes",
+                          "required": [
+                            "object_domain",
+                            "object_id",
+                            "description"
+                          ],
+                          "properties": {
+                            "object_domain": {
+                              "type": "string"
+                            },
+                            "object_id": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "is_completed": {
+                              "type": "boolean"
+                            },
+                            "completed_at": {
+                              "type": "null"
+                            },
+                            "updated_by": {
+                              "type": "string"
+                            },
+                            "updated_at": {
+                              "type": "null"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "due": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "format": "date-time",
+                              "example": "2020-01-29 11:44:40"
+                            },
+                            "urgency": {
+                              "type": "integer"
+                            }
+                          }
+                        },
+                        "links": {
+                          "type": "object",
+                          "properties": {
+                            "self": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Not Authorized",
+                "schema": {
+                  "type": "object",
+                  "title": "Error Response",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "500": {
+                "description": "Server Error",
+                "schema": {
+                  "type": "object",
+                  "title": "Error Response",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "/checklists/complete": {
+          "post":{
+            "tags": ["Items"],
+            "summary":"Complete item(s)",
+            "security" : [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "body",
+                "name": "body",
+                "required": false,
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "item_id": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "type": "object",
+                  "title": "Checklist Complete Response",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "item_id": {
+                            "type": "integer"
+                          },
+                          "is_completed": {
+                            "type": "boolean"
+                          },
+                          "checklist_id": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/checklists/incomplete": {
+          "post":{
+            "tags": ["Items"],
+            "summary":"Incomplete item(s)",
+            "security" : [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "body",
+                "name": "body",
+                "required": false,
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "item_id": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "type": "object",
+                  "title": "Checklist Complete Response",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "item_id": {
+                            "type": "integer"
+                          },
+                          "is_completed": {
+                            "type": "boolean"
+                          },
+                          "checklist_id": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/checklists/{checklistId}/items": {
+          "get":{
+            "tags": ["Items"],
+            "summary":"Get all items by given {checklistId}",
+            "security" : [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "path",
+                "name":"checklistId",
+                "type": "string",
+                "required": true
+              },
+              {
+                "in": "query",
+                "name":"filter",
+                "type": "string"
+              },
+              {
+                "in":"query",
+                "name": "sort",
+                "type": "string"
+              },
+              {
+                "in":"query",
+                "name": "fields",
+                "type": "string"
+              },
+              {
+                "in":"query",
+                "name": "page_limit",
+                "type": "string",
+                "default": "10",
+                "description": "Limit returned resource."
+              },
+              {
+                "in":"query",
+                "name": "page_offset",
+                "type": "string",
+                "default": "0",
+                "description": "Limit returned resource."
+              }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "$ref": "#/definitions/checklist_list_response"
+                }
+              }
+            }
+          },
+          "post" : {
+            "tags": ["Items"],
+            "summary":"Create item by given checklistId",
+            "security" : [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "path",
+                "name":"checklistId",
+                "type": "string",
+                "required": true
+              },
+              {
+                "in": "body",
+                "name": "body",
+                "required": false,
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "title": "Item Attributes",
+                      "description": "Item attributes",
+                      "required": [
+                        "description"
+                      ],
+                      "properties": {
+                        "description": {
+                          "type": "string"
+                        },
+                        "is_completed": {
+                          "type": "boolean"
+                        },
+                        "completed_at": {
+                          "type": "null"
+                        },
+                        "due": {
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "format": "date-time",
+                          "example": "2020-01-29 11:44:40"
+                        },
+                        "urgency": {
+                          "type": "null"
+                        },
+                        "updated_by": {
+                          "type": "null"
+                        },
+                        "updated_at": {
+                          "type": "null"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "assignee_id": {
+                          "type": [
+                            "null",
+                            "string"
+                          ]
+                        },
+                        "task_id": {
+                          "type": [
+                            "null",
+                            "number"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "$ref": "#/definitions/item_response"
+                }
+              }
+            }
+          }
+        },
+        "/checklists/{checklistId}/items/{itemId}": {
+          "get":{
+            "tags": ["Items"],
+            "summary":"Get checklist item by given {checklistId} and {itemId}",
+            "security" : [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "path",
+                "name":"checklistId",
+                "type": "string",
+                "required": true
+              },
+              {
+                "in": "path",
+                "name":"itemId",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "$ref": "#/definitions/item_response"
+                }
+              }
+            }
+          },
+          "patch":{
+            "tags": ["Items"],
+            "summary":"Edit Checklist Item on given {checklistId} and {itemId}",
+            "security" : [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "path",
+                "name":"checklistId",
+                "type": "string",
+                "required": true
+              },
+              {
+                "in": "path",
+                "name":"itemId",
+                "type": "string",
+                "required": true
+              },
+              {
+                "in": "body",
+                "name":"body",
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "title": "Item Attributes",
+                          "description": "Item attributes",
+                          "required": [
+                            "description"
+                          ],
+                          "properties": {
+                            "description": {
+                              "type": "string"
+                            },
+                            "is_completed": {
+                              "type": "boolean"
+                            },
+                            "completed_at": {
+                              "type": "null"
+                            },
+                            "due": {
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "format": "date-time",
+                              "example": "2020-01-29 11:44:40"
+                            },
+                            "urgency": {
+                              "type": "null"
+                            },
+                            "updated_by": {
+                              "type": "null"
+                            },
+                            "updated_at": {
+                              "type": "null"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "assignee_id": {
+                              "type": [
+                                "null",
+                                "string"
+                              ]
+                            },
+                            "task_id": {
+                              "type": [
+                                "null",
+                                "number"
+                              ]
+                            }
+                          }
+                        },
+                        "links": {
+                          "type": "object",
+                          "properties": {
+                            "self": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "$ref": "#/definitions/item_response"
+                }
+              }
+            }
+          },
+          "delete":{
+            "tags": ["Items"],
+            "summary":"Delete Checklist Item on given {checklistId} and {itemId}",
+            "security" : [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "path",
+                "name":"checklistId",
+                "type": "string",
+                "required": true
+              },
+              {
+                "in": "path",
+                "name":"itemId",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "type": "object",
+                  "title": "Checklist Response",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id",
+                        "attributes",
+                        "links"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "title": "Cheklist Attributes",
+                          "required": [
+                            "object_domain",
+                            "object_id",
+                            "description"
+                          ],
+                          "properties": {
+                            "object_domain": {
+                              "type": "string"
+                            },
+                            "object_id": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "is_completed": {
+                              "type": "boolean"
+                            },
+                            "completed_at": {
+                              "type": "null"
+                            },
+                            "updated_by": {
+                              "type": "string"
+                            },
+                            "updated_at": {
+                              "type": "null"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "due": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "format": "date-time",
+                              "example": "2020-01-29 11:44:40"
+                            },
+                            "urgency": {
+                              "type": "integer"
+                            }
+                          }
+                        },
+                        "links": {
+                          "type": "object",
+                          "required": [
+                            "self"
+                          ],
+                          "properties": {
+                            "self": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "/checklists/{checklistId}/items/_bulk": {
+          "post" : {
+            "tags": ["Items"],
+            "summary":"Create item by given checklistId",
+            "security" : [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "path",
+                "name":"checklistId",
+                "type": "string",
+                "required": true
+              },
+              {
+                "in": "body",
+                "name": "body",
+                "required": false,
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "action": {
+                            "type": "string"
+                          },
+                          "attributes": {
+                            "type": "object",
+                            "properties": {
+                              "description": {
+                                "type": "string"
+                              },
+                              "due": {
+                                "type": "string"
+                              },
+                              "urgency": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "action": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/checklists/items/summaries": {
+          "get":{
+            "tags": ["Items"],
+            "summary":"Count summary of checklist’s item",
+            "security" : [{"Bearer": []}],
+            "parameters":[
+              {
+                "name":"date",
+                "in": "query",
+                "type": "date",
+                "required": true,
+                "description": "String. ISO Date 8601. Must be URL encoded. Example: 2019-04-25T00:00:00.123123%2B07:00",
+                "example" :"2021-12-30T00:00:00.123123%2B07:00"
+              },
+              {
+                "name":"object_domain",
+                "in": "query",
+                "type": "string",
+                "required": false,
+                "description": "Valid checklist object domain"
+              },
+              {
+                "name":"tz",
+                "in": "query",
+                "type": "string",
+                "required": false,
+                "description": "Valid timezone database name in https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
+              }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "today": {
+                            "type": "integer"
+                          },
+                          "past_due": {
+                            "type": "integer"
+                          },
+                          "this_week": {
+                            "type": "integer"
+                          },
+                          "past_week": {
+                            "type": "integer"
+                          },
+                          "this_month": {
+                            "type": "integer"
+                          },
+                          "past_month": {
+                            "type": "integer"
+                          },
+                          "total": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/checklists/items" : {
+          "get" : {
+            "tags": ["Items"],
+            "summary":"This endpoint will get all available items.",
+            "description" : "You can use ?filter[field_name][operator] to filter the fields.\n You can sort the filter by using ?sort=field. Use - to make it descending. Example: ?sort=-due to sort due descending",
+            "security" : [{"Bearer": []}],
+            "parameters":[
+              {
+                "in": "query",
+                "name":"filter",
+                "type": "string"
+              },
+              {
+                "in":"query",
+                "name": "sort",
+                "type": "string"
+              },
+              {
+                "in":"query",
+                "name": "fields",
+                "type": "string"
+              },
+              {
+                "in":"query",
+                "name": "page_limit",
+                "type": "string",
+                "default": "10",
+                "description": "Limit returned resource."
+              },
+              {
+                "in":"query",
+                "name": "page_offset",
+                "type": "string",
+                "default": "0",
+                "description": "Limit returned resource."
+              }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer"
+                        },
+                        "total": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "attributes": {
+                            "type": "object",
+                            "properties": {
+                              "description": {
+                                "type": "string"
+                              },
+                              "is_completed": {
+                                "type": "boolean"
+                              },
+                              "completed_at": {
+                                "type": "null"
+                              },
+                              "completed_by": {
+                                "type": "null"
+                              },
+                              "due": {
+                                "type": "string"
+                              },
+                              "urgency": {
+                                "type": "integer"
+                              },
+                              "updated_by": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "created_by": {
+                                "type": "integer"
+                              },
+                              "checklist_id": {
+                                "type": "integer"
+                              },
+                              "assignee_id": {
+                                "type": "integer"
+                              },
+                              "task_id": {
+                                "type": "null"
+                              },
+                              "deleted_at": {
+                                "type": "null"
+                              },
+                              "created_at": {
+                                "type": "string"
+                              },
+                              "updated_at": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "links": {
+                            "type": "object",
+                            "properties": {
+                              "self": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "links": {
+                      "type": "object",
+                      "properties": {
+                        "first": {
+                          "type": "string"
+                        },
+                        "last": {
+                          "type": "string"
+                        },
+                        "next": {
+                          "type": "string"
+                        },
+                        "prev": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/checklists/histories" : {
+          "get" : {
+            "tags": ["History"],
+            "summary":"",
+            "description" : "",
+            "security": [{"Bearer": []}],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer"
+                        },
+                        "total": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "attributes": {
+                            "type": "object",
+                            "properties": {
+                              "loggable_type": {
+                                "type": "string"
+                              },
+                              "loggable_id": {
+                                "type": "integer"
+                              },
+                              "action": {
+                                "type": "string"
+                              },
+                              "kwuid": {
+                                "type": "integer"
+                              },
+                              "value": {
+                                "type": "string"
+                              },
+                              "created_at": {
+                                "type": "string"
+                              },
+                              "updated_at": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "links": {
+                            "type": "object",
+                            "properties": {
+                              "self": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "links": {
+                      "type": "object",
+                      "properties": {
+                        "first": {
+                          "type": "string"
+                        },
+                        "last": {
+                          "type": "string"
+                        },
+                        "next": {
+                          "type": "null"
+                        },
+                        "prev": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/checklists/histories/{historyId}" : {
+          "get" : {
+            "tags": ["History"],
+            "summary":"",
+            "description" : "",
+            "security": [{"Bearer": []}],
+            "parameters": [
+              {
+                "name": "historyId",
+                "in":"path",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "responses": {
+              "401" : {
+                "schema" : {
+                  "type": "object",
+                  "title": "Not Authorized",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "error"
+                  ]
+                }
+              },
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "properties": {
+                            "loggable_type": {
+                              "type": "string"
+                            },
+                            "loggable_id": {
+                              "type": "integer"
+                            },
+                            "action": {
+                              "type": "string"
+                            },
+                            "kwuid": {
+                              "type": "integer"
+                            },
+                            "value": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "updated_at": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "links": {
+                          "type": "object",
+                          "properties": {
+                            "self": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+    },
+    "securityDefinitions": {
+      "Bearer": {
+        "type": "apiKey",
+        "name": "authorization",
+        "in": "header"
+      }
+    },
+    "definitions": {
+        "checklist_complete_payload": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "item_id": {
+                        "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "title": "Checklist Complete Payload"
+        },
+        "checklist_complete_response":{
+            "type": "object",
+            "title": "Checklist Complete Response",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "item_id": {
+                                "type": "integer"
+                            },
+                            "is_completed": {
+                                "type": "boolean"
+                            },
+                            "checklist_id": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "checklist_item_response": {
+            "type": "object",
+            "title": "Checklist Item Response",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "type": "integer"
+                        },
+                        "attributes": {
+                            "type": "object",
+                            "$ref": "#/definitions/checklist_attribut"
+                        },
+                        "links": {
+                            "type": "object",
+                            "properties": {
+                                "self": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "checklist_list_response":{
+            "type": "object",
+            "title": "Checklist List Response",
+            "properties": {
+                "meta": {
+                    "type": "object",
+                    "required": [
+                        "count",
+                        "total"
+                    ],
+                    "properties": {
+                        "count": {
+                            "type": "integer"
+                        },
+                        "total": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "links": {
+                    "type": "object",
+                    "required": [
+                        "first",
+                        "last",
+                        "next",
+                        "prev"
+                    ],
+                    "properties": {
+                        "first": {
+                            "type": "string"
+                        },
+                        "last": {
+                            "type": "string"
+                        },
+                        "next": {
+                            "type": "string"
+                        },
+                        "prev": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "type",
+                            "id",
+                            "links"
+                        ],
+                        "properties": {
+                            "type": {
+                                "type": "string"
+                            },
+                            "id": {
+                                "type": "string"
+                            },
+                            "attributes": {
+                                "type": "object",
+                                "title": "Cheklist Attributes",
+                                "required": [
+                                    "object_domain",
+                                    "object_id",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "object_domain": {
+                                        "type": "string"
+                                    },
+                                    "object_id": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "is_completed": {
+                                        "type": "boolean"
+                                    },
+                                    "completed_at": {
+                                        "type": "null"
+                                    },
+                                    "updated_by": {
+                                        "type": "string"
+                                    },
+                                    "updated_at": {
+                                        "type": "null"
+                                    },
+                                    "created_at": {
+                                        "type": "string"
+                                    },
+                                    "due": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "format": "date-time",
+                                        "example": "2020-01-29 11:44:40"
+                                    },
+                                    "urgency": {
+                                        "type": "integer"
+                                    }
+                                }
+                            },
+                            "links": {
+                                "type": "object",
+                                "required": [
+                                    "self"
+                                ],
+                                "properties": {
+                                    "self": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "required": [
+                "meta",
+                "links",
+                "data"
+            ]
+        },
+        "checklist_payload":{
+            "type": "object",
+            "title": "Checklist Payload",
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "attributes"
+                ],
+                "properties": {
+                  "attributes": {
+                    "type": "object",
+                    "title": "Cheklist Attributes",
+                    "required": [
+                      "object_domain",
+                      "object_id",
+                      "description"
+                    ],
+                    "properties": {
+                      "object_domain": {
+                        "type": "string"
+                      },
+                      "object_id": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "is_completed": {
+                        "type": "boolean"
+                      },
+                      "completed_at": {
+                        "type": "null"
+                      },
+                      "updated_by": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "null"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "due": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "format": "date-time",
+                        "example": "2020-01-29 11:44:40"
+                      },
+                      "urgency": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "data"
+            ]
+        },
+        "checklist_response":{
+            "type": "object",
+            "title": "Checklist Response",
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "type",
+                  "id",
+                  "attributes",
+                  "links"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "attributes": {
+                    "type": "object",
+                    "title": "Cheklist Attributes",
+                    "required": [
+                      "object_domain",
+                      "object_id",
+                      "description"
+                    ],
+                    "properties": {
+                      "object_domain": {
+                        "type": "string"
+                      },
+                      "object_id": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "is_completed": {
+                        "type": "boolean"
+                      },
+                      "completed_at": {
+                        "type": "null"
+                      },
+                      "updated_by": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "null"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "due": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "format": "date-time",
+                        "example": "2020-01-29 11:44:40"
+                      },
+                      "urgency": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "links": {
+                    "type": "object",
+                    "required": [
+                      "self"
+                    ],
+                    "properties": {
+                      "self": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "data"
+            ]
+        },
+        "checklist_attribut":{
+            "type": "object",
+            "title": "Cheklist Attributes",
+            "properties": {
+              "object_domain": {
+                "type": "string"
+              },
+              "object_id": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "is_completed": {
+                "type": "boolean"
+              },
+              "completed_at": {
+                "type": "null"
+              },
+              "updated_by": {
+                "type": "string"
+              },
+              "updated_at": {
+                "type": "null"
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "due": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time",
+                "example": "2020-01-29 11:44:40"
+              },
+              "urgency": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "object_domain",
+              "object_id",
+              "description"
+            ]
+        },
+        "item_attribut":{
+            "type": "object",
+            "title": "Item Attributes",
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "is_completed": {
+                "type": "boolean"
+              },
+              "completed_at": {
+                "type": "null"
+              },
+              "due": {
+                "type": [
+                  "null",
+                  "string"
+                ],
+                "format": "date-time",
+                "example": "2020-01-29 11:44:40"
+              },
+              "urgency": {
+                "type": "null"
+              },
+              "updated_by": {
+                "type": "null"
+              },
+              "updated_at": {
+                "type": "null"
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "assignee_id": {
+                "type": [
+                  "null",
+                  "string"
+                ]
+              },
+              "task_id": {
+                "type": [
+                  "null",
+                  "number"
+                ]
+              }
+            },
+            "required": [
+              "description"
+            ]
+        },
+        "item_response":{
+            "type": "object",
+            "title": "Item Response",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "attributes": {
+                      "$ref":"#/definitions/item_attribut"
+                  },
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "self": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+        },
+        "template_attribut":{
+            "type": "object",
+            "title": "Template Attribute",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "checklist": {
+                "type": "object",
+                "required": [
+                  "description"
+                ],
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "due_interval": {
+                    "type": "integer"
+                  },
+                  "due_unit": {
+                    "type": "string",
+                    "enum": [
+                      "minute",
+                      "hour",
+                      "day",
+                      "week",
+                      "month"
+                    ]
+                  }
+                }
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "description"
+                  ],
+                  "properties": {
+                    "description": {
+                      "type": "string"
+                    },
+                    "urgency": {
+                      "type": "integer"
+                    },
+                    "due_interval": {
+                      "type": "integer"
+                    },
+                    "due_unit": {
+                      "type": "string",
+                      "enum": [
+                        "minute",
+                        "hour",
+                        "day",
+                        "week",
+                        "month"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+        },
+        "template_payload":{
+            "type": "object",
+            "title": "Template Payload",
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "checklist": {
+                    "type": "object",
+                    "required": [
+                      "description"
+                    ],
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "due_interval": {
+                        "type": "integer"
+                      },
+                      "due_unit": {
+                        "type": "string",
+                        "enum": [
+                          "minute",
+                          "hour",
+                          "day",
+                          "week",
+                          "month"
+                        ]
+                      }
+                    }
+                  },
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "description"
+                      ],
+                      "properties": {
+                        "description": {
+                          "type": "string"
+                        },
+                        "urgency": {
+                          "type": "integer"
+                        },
+                        "due_interval": {
+                          "type": "integer"
+                        },
+                        "due_unit": {
+                          "type": "string",
+                          "enum": [
+                            "minute",
+                            "hour",
+                            "day",
+                            "week",
+                            "month"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+        },
+        "template_singgle_response":{
+            "type": "object",
+            "title": "Template Single Response",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "attributes": {
+                    "$ref":"#/definitions/template_attribut"
+                  },
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "self": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+        }
+    }
+}
+
