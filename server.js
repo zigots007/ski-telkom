@@ -14,8 +14,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const routes = require("./routes");
 app.use(routes);
-router.use('/api-docs', swaggerUi.serve);
-router.get('/api-docs', swaggerUi.setup(swaggerDocument));
+router.use('/', swaggerUi.serve);
+router.get('/', swaggerUi.setup(swaggerDocument));
 app.use(router)
 
 app.listen(4000, (err) => {
